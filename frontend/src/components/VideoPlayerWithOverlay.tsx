@@ -61,18 +61,6 @@ const VideoPlayerWithOverlay: React.FC<VideoPlayerProps> = ({
     }
   };
 
-  // Handle play/pause
-  const handlePlayPause = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-      } else {
-        videoRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
-    }
-  };
-
   // Handle sync offset change
   const handleSyncOffsetChange = (offset: number) => {
     setSyncOffset(offset);
@@ -127,19 +115,21 @@ const VideoPlayerWithOverlay: React.FC<VideoPlayerProps> = ({
         </Box>
       )}
 
-      {/* Debug Info */}
-      <Box sx={{ mt: 1, p: 1, bgcolor: 'grey.100', borderRadius: 1 }}>
-        <Typography variant="caption" component="div">
-          Video Time: {currentVideoTime.toFixed(2)}s | 
-          Sync Offset: {syncOffset.toFixed(2)}s | 
-          Synced Time: {getSyncedTelemetryTime(currentVideoTime).toFixed(2)}s
-        </Typography>
-        {currentTelemetry && (
-          <Typography variant="caption" component="div">
-            Telemetry Timestamp: {currentTelemetry.timestamp.toFixed(2)}s
+      {/* Debug Info - Only show when sync controls are visible */}
+      {showSyncControls && (
+        <Box sx={{ mt: 1, p: 1, bgcolor: 'rgba(255,255,255,0.1)', borderRadius: 1 }}>
+          <Typography variant="caption" component="div" sx={{ color: '#cccccc', fontFamily: 'monospace' }}>
+            Video Time: {currentVideoTime.toFixed(2)}s | 
+            Sync Offset: {syncOffset.toFixed(2)}s | 
+            Synced Time: {getSyncedTelemetryTime(currentVideoTime).toFixed(2)}s
           </Typography>
-        )}
-      </Box>
+          {currentTelemetry && (
+            <Typography variant="caption" component="div" sx={{ color: '#cccccc', fontFamily: 'monospace' }}>
+              Telemetry Timestamp: {currentTelemetry.timestamp.toFixed(2)}s
+            </Typography>
+          )}
+        </Box>
+      )}
     </Box>
   );
 };
